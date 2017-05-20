@@ -1,0 +1,73 @@
+﻿@model IEnumerable<WorkFlowProject.Models.Achat>
+
+@{
+    ViewBag.Title = "liste des Besoins";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+<br /><br />
+
+<table class="table table-striped table-hover table-bordered" >
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Department.Dep)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Des)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Categ)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DtAcha)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Creation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LieuLiv)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Imp)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Qte)
+        </th>
+        <th> Action</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Department.Dep)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Des)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Categ)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DtAcha)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Creation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LieuLiv)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Imp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Qte)
+        </td>
+        <td>
+            @Html.ActionLink("Détail", "Detail", new { id=item.ID }) 
+        </td>
+
+    </tr>
+}
+
+</table>

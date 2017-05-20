@@ -1,0 +1,387 @@
+﻿@model WorkFlowProject.Models.Demande
+
+
+
+@{
+    ViewBag.Title = "Détaille de la Demande d'Achat";
+    
+    if (Model.Avis.Count > 0)
+    {
+        ViewBag.AvisResp = Model.Avis.Where(a => a.Code == WorkFlowProject.Models.AvisCode.init).FirstOrDefault();
+        ViewBag.AvisDemandeur = Model.Avis.Where(a => a.Code == WorkFlowProject.Models.AvisCode.demandeur).FirstOrDefault();
+        ViewBag.AvisDaf = Model.Avis.Where(a => a.Code == WorkFlowProject.Models.AvisCode.daf).FirstOrDefault();
+        ViewBag.AvisAudit = Model.Avis.Where(a => a.Code == WorkFlowProject.Models.AvisCode.audit).FirstOrDefault();
+        ViewBag.AvisDg = Model.Avis.Where(a => a.Code == WorkFlowProject.Models.AvisCode.dg).FirstOrDefault();
+        
+    }
+}
+
+
+<div class="row">
+    <div class="col-xs-3">
+        <img src="~/Content/img/Peugeot.jpg" width="100" style="margin-top:auto;" />
+    </div>
+    <div class="col-xs-6">
+        <center>
+            <h2>@ViewBag.Title</h2>
+        </center>
+    </div>
+    <div>
+        @if (Model.Achat.State == WorkFlowProject.Models.StateDemande.DemandeAccepter)
+        {
+            <h4 style="color:green;">Acceptée</h4>
+        }
+        else if(Model.Achat.State == WorkFlowProject.Models.StateDemande.DemandeRefuser)
+        {
+            <h4 style="color:red;">Refusée</h4>
+        }
+        else
+        {
+            <h4 style="color:blue;">En cours </h4>
+        }
+        
+    </div>
+</div>
+<hr />
+<div class="row">
+
+    <div class="col-xs-2">
+        <b>N° :</b> @Model.Achat.ID
+    </div>
+    <div class="col-xs-5">
+        <b>Date de la Demande : </b> @Model.Achat.DtAcha
+    </div>
+    <div class="col-xs-5">
+        <b>Budget :</b> @Model.Achat.Department.Budget
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-xs-5">
+        <label>
+            Demandeur : (DIR / SCE)
+        </label>
+    </div>
+    <div class="col-xs-7">
+        @Model.Achat.Department.Dep
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-5">
+        <label>
+            Total dépenses budgétées :
+        </label>
+    </div>
+    <div class="col-xs-7">
+        @Model.Achat.Department.Depense
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-5">
+        <label>
+            Total dépenses à la date de la demande :
+        </label>
+    </div>
+    <div class="col-xs-7">
+        @Model.Achat.Department.Budget
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-xs-5">
+        <label>
+            Categories :
+        </label>
+    </div>
+    <div class="col-xs-7">
+        <label>
+            @Model.Achat.Categ
+        </label>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-xs-5">
+        <label>
+            Création / Remplacement :
+        </label>
+    </div>
+    <div class="col-xs-7">
+        @if (Model.Achat.Creation == true) { <p>Creation</p>}
+        else { <p>Remplacement</p>}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-5">
+        <label>
+            Désignation de demande :
+        </label>
+    </div>
+    <div class="col-xs-7">
+       <b>@Model.Achat.Des</b> 
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-5">
+        <label>
+            Lieu de livraison :
+        </label>
+    </div>
+    <div class="col-xs-7">
+        @Model.Achat.LieuLiv
+    </div>
+
+</div>
+
+
+<div class="row">
+    <div class="col-xs-5">
+        <label>
+            Imputation :
+        </label>
+    </div>
+    <div class="col-xs-7">
+        @Model.Achat.Imp
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-xs-5">
+        <label>
+            Quantité : 
+        </label>
+    </div>
+    <div class="col-xs-7">
+        @Model.Achat.Qte
+    </div>
+
+    @if (ViewBag.AvisResp != null)
+    {
+        
+        <div class="col-sm-offset-5 col-xs-7">
+            <div class="row">
+                <label>Signature autorisée du service :</label> <br />
+                @ViewBag.AvisResp.Lbl
+            </div>
+            <div class="row">
+                <img src="@ViewBag.AvisResp.User.SignatureUser" alt="Sign" width="140" />
+            </div>
+            
+        </div>
+    }
+    
+
+</div>
+
+<br />
+
+
+    <div class="row">
+        <table class="table table-bordered table-hover">
+            <thead>
+            <th>Fournisseur</th>
+            <th>Prix HT</th>
+            <th>Remise</th>
+            <th>Total</th>
+            <th>Délais de Paiement</th>
+            </thead>
+            <tbody>
+                @if (Model.AF != null)
+                {
+
+                    foreach (var fr in Model.AF)
+                    {
+                        var total = (fr.Price - fr.Remise) * Model.Achat.Qte;
+                        
+                        if (fr.State == WorkFlowProject.Models.StateFournisseur.Chose)
+                        {
+                            <tr class="success text-success" style="font-size:large;font-weight:bold;">
+                                <td>@fr.Fournisseur.Nom_frn</td>
+                                <td>@fr.Price</td>
+                                <td>@fr.Remise</td>
+                                <td>@total</td>
+                                <td>@fr.Delais</td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr class="danger">
+                                <td>@fr.Fournisseur.Nom_frn</td>
+                                <td>@fr.Price</td>
+                                <td>@fr.Remise</td>
+                                <td>@total</td>
+                                <td>@fr.Delais</td>
+                            </tr>
+                        }
+
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+
+<div class="row">
+    @if (ViewBag.AvisDemandeur != null)
+    {
+
+        <div class="col-xs-6">
+            <div class="row">
+                <label>Avis technique  :</label> <br />
+                @ViewBag.AvisDemandeur.Lbl
+            </div>
+            <div class="row">
+                <img src="@ViewBag.AvisDemandeur.User.SignatureUser" alt="Sign" width="140" />
+            </div>
+
+        </div>
+    }
+    
+    @if (ViewBag.AvisDaf != null)
+    {
+
+        <div class="col-xs-6">
+            <div class="row">
+                <label>D.A.F</label> <br />
+                @ViewBag.AvisDaf.Lbl
+            </div>
+            <div class="row">
+                <img src="@ViewBag.AvisDaf.User.SignatureUser" alt="Sign" width="140" />
+            </div>
+
+        </div>
+    }
+ </div>
+<div class="row">   
+    @if (ViewBag.AvisAudit != null)
+    {
+
+        <div class="col-xs-6">
+            <div class="row">
+                <label>Avis Audit Interne</label> <br />
+                @ViewBag.AvisAudit.Lbl
+            </div>
+            <div class="row">
+                <img src="@ViewBag.AvisAudit.User.SignatureUser" alt="Sign" width="140" />
+            </div>
+
+        </div>
+    }
+    
+    @if (ViewBag.AvisDg != null)
+    {
+
+        <div class="col-xs-6">
+            <div class="row">
+                <label>Décision Direction Générale</label> <br />
+                @ViewBag.AvisDg.Lbl
+            </div>
+            <div class="row">
+                <img src="@ViewBag.AvisDg.User.SignatureUser" alt="Sign" width="140" />
+            </div>
+
+        </div>
+    }
+
+</div>
+
+@if (User.IsInRole(SecurityRole.AUDIT) || User.IsInRole(SecurityRole.DAF) || User.IsInRole(SecurityRole.DG))
+{
+    if (User.IsInRole(SecurityRole.AUDIT))
+    {
+        <div id="chart_div" style="width: 450px; height: 300px;"></div>
+    }
+    <div class="row">
+        <div class="col-md-6">
+            @using (Html.BeginForm("Accept", "Avis", FormMethod.Post))
+            {
+
+                @Html.Hidden("ID", Model.Achat.ID)
+
+                <div class="input-group">
+                    @Html.TextBox("Lbl", null, new { @class = "form-control", @placeholder = "Avis .", @required = "required" })
+                    <span class="input-group-btn">
+                        <button class="btn btn-success" type="submit">Accepter</button>
+                    </span>
+                </div>
+            }
+        </div>
+        <div class="col-md-6">
+            @using (Html.BeginForm("Deny", "Avis", FormMethod.Post))
+            {
+
+                @Html.Hidden("ID", Model.Achat.ID)
+
+                <div class="input-group">
+                    @Html.TextBox("Lbl", null, new { @class = "form-control", @placeholder = "Avis .", @required = "required" })
+                    <span class="input-group-btn">
+                        <button class="btn btn-danger" type="submit">Refuser</button>
+                    </span>
+                </div>
+            }
+        </div>
+
+
+
+    </div>
+
+}
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+
+
+<script type="text/javascript">
+
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+    function drawChart() {
+        $.getJSON('/Avis/CalcStat/@Model.Achat.DepartmentID', null, function (data) {
+
+
+
+            var re = JSON.stringify(data);
+            var items = '[["Category" ,"Count"],';
+            JSON.parse(re, function (key, value) {
+                if (key != '' && !Number.isInteger(Number.parseInt(key))) {
+                    items += '["' + key + '",' + value + '],';
+                }
+            });
+            items += '[]]';
+
+            var r = JSON.parse(items);
+
+            r.pop();
+            
+            var d = google.visualization.arrayToDataTable(r);
+
+            var options = {
+                title: 'Audit',
+                is3D: true,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(d, options);
+            
+        });
+        
+    }
+</script>
+
+}
+
+
+
+
+
+

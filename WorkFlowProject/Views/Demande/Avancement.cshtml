@@ -1,0 +1,288 @@
+﻿@model IEnumerable<WorkFlowProject.Models.Avancement>
+
+@{
+
+    ViewBag.Title = "Tableau d'Avancement";
+}
+
+<h2>@ViewBag.Title</h2>
+<br /><br />
+
+@if (User.IsInRole(SecurityRole.RespAcha))
+{
+    <div class="row">
+        <div class="col-xs-12">
+
+
+            <table class="table table-striped table-hover table-bordered">
+                <tr>
+                    <th>
+                        Departement
+                    </th>
+                    <th>
+                        Libélé
+                    </th>
+                    <th>
+                        Categorie
+                    </th>
+                    <th>Demandeur</th>
+                    <th>Resp Achat</th>
+                    <th>DAF</th>
+                    <th>Audit</th>
+                    <th>DG</th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Achat.Department.Dep)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Achat.Des)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Achat.Categ)
+                        </td>
+                        @if (item.valid)
+                        {
+                            if (item.Audit)
+                            {
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><span class="glyphicon glyphicon-ok-circle"></span></td>
+                                <td></td>
+                            }
+                            else if (item.Daf)
+                            {
+                                <td></td>
+                                <td></td>
+
+                                <td><span class="glyphicon glyphicon-ok-circle"></span></td>
+                                <td></td>
+                                <td></td>
+                            }
+                            else if (item.Dem)
+                            {
+                                <td><span class="glyphicon glyphicon-ok-circle"></span></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            }
+                            else if (item.Dg)
+                            {
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><span class="glyphicon glyphicon-ok-circle"></span></td>
+                            }
+                            else if (item.RespA)
+                            {
+                                <td></td>
+                                <td><span class="glyphicon glyphicon-ok-circle"></span></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+
+                            }
+                        }
+                        else
+                        {
+                            if (item.Audit)
+                            {
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><span class="glyphicon glyphicon-ban-circle"></span></td>
+                                <td></td>
+                            }
+                            else if (item.Daf)
+                            {
+                                <td></td>
+                                <td></td>
+                                <td><span class="glyphicon glyphicon-ban-circle"></span></td>
+                                <td></td>
+                                <td></td>
+                            }
+                            else if (item.Dem)
+                            {
+                                <td><span class="glyphicon glyphicon-ban-circle"></span></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            }
+                            else if (item.Dg)
+                            {
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><span class="glyphicon glyphicon-ban-circle"></span></td>
+                            }
+                            else if (item.RespA)
+                            {
+                                <td></td>
+                                <td><span class="glyphicon glyphicon-ban-circle"></span></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+
+                            }
+                        }
+
+                        <td>
+                            @Html.ActionLink("Détail", "Detail", new { id = item.Achat.ID })
+                        </td>
+
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+
+
+    </div>
+
+}
+else if (User.IsInRole(SecurityRole.Demandeur))
+{
+    <div class="row">
+        <div class="col-xs-12">
+
+
+            <table class="table table-striped table-hover table-bordered">
+                <tr>
+                    <th>
+                        Libélé
+                    </th>
+                    <th>
+                        Categorie
+                    </th>
+                    <th>Demandeur</th>
+                    <th>Resp Achat</th>
+                    <th>DAF</th>
+                    <th>Audit</th>
+                    <th>DG</th>
+                    <th></th>
+                </tr>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Achat.Des)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Achat.Categ)
+                        </td>
+                        @if (item.valid)
+                        {
+                            if (item.Audit)
+                            {
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><span class="glyphicon glyphicon-ok-circle"></span></td>
+                                <td></td>
+                            }
+                            else if (item.Daf)
+                            {
+                                <td></td>
+                                <td></td>
+
+                                <td><span class="glyphicon glyphicon-ok-circle"></span></td>
+                                <td></td>
+                                <td></td>
+                            }
+                            else if (item.Dem)
+                            {
+                                <td><span class="glyphicon glyphicon-ok-circle"></span></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            }
+                            else if (item.Dg)
+                            {
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><span class="glyphicon glyphicon-ok-circle"></span></td>
+                            }
+                            else if (item.RespA)
+                            {
+                                <td></td>
+                                <td><span class="glyphicon glyphicon-ok-circle"></span></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+
+                            }
+                        }
+                        else
+                        {
+                            if (item.Audit)
+                            {
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><span class="glyphicon glyphicon-ban-circle"></span></td>
+                                <td></td>
+                            }
+                            else if (item.Daf)
+                            {
+                                <td></td>
+                                <td></td>
+                                <td><span class="glyphicon glyphicon-ban-circle"></span></td>
+                                <td></td>
+                                <td></td>
+                            }
+                            else if (item.Dem)
+                            {
+                                <td><span class="glyphicon glyphicon-ban-circle"></span></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            }
+                            else if (item.Dg)
+                            {
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td><span class="glyphicon glyphicon-ban-circle"></span></td>
+                            }
+                            else if (item.RespA)
+                            {
+                                <td></td>
+                                <td><span class="glyphicon glyphicon-ban-circle"></span></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+
+                            }
+                        }
+
+                        <td>
+                            @Html.ActionLink("Détail", "Detail", new { id = item.Achat.ID })
+                        </td>
+
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+
+
+    </div>
+}
+

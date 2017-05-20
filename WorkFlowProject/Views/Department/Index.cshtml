@@ -1,0 +1,43 @@
+﻿@model IEnumerable<WorkFlowProject.Models.Department>
+
+@{
+    ViewBag.Title = "liste des Départements";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Dep)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Budget)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Depense)
+        </th>
+        <th>Action</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Dep)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Budget)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Depense)
+        </td>
+        <td>
+            @Html.ActionLink("Modifier", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Détail", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Supprimer", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

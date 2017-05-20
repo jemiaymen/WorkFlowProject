@@ -1,0 +1,33 @@
+﻿@model IEnumerable<WorkFlowProject.Models.Category>
+
+@{
+    ViewBag.Title = "Liste des Categorie";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+<br /><br />
+
+<table class="table table-striped table-hover table-bordered">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Lbl)
+        </th>
+        <th>Action</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lbl)
+            </td>
+            <td>
+                @Html.ActionLink("Modifier", "Edit", new { id = item.ID }) |
+                @Html.ActionLink("Détail", "Details", new { id = item.ID }) |
+                @Html.ActionLink("Supprimer", "Delete", new { id = item.ID })
+            </td>
+        </tr>
+    }
+
+</table>

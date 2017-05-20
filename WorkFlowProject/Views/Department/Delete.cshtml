@@ -1,0 +1,47 @@
+﻿@model WorkFlowProject.Models.Department
+
+@{
+    ViewBag.Title = "Supprimer Département";
+}
+
+<h2>Delete</h2>
+
+<h3>Voulez vous vraiment supprimer ce département?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Dep)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Dep)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Budget)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Budget)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Depense)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Depense)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Supprimer" class="btn btn-default" /> |
+            @Html.ActionLink("Retour à la liste", "Index")
+        </div>
+    }
+</div>

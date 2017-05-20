@@ -1,0 +1,230 @@
+﻿@using Microsoft.AspNet.Identity
+@using WorkFlowProject.Models
+
+@if (Request.IsAuthenticated)
+{
+
+
+
+
+
+
+    if (User.IsInRole(SecurityRole.Demandeur))
+    {
+
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Besoins <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("Consulter", "Index", "Besoin")</li>
+                <li>@Html.ActionLink("Créer", "Ajout", "Besoin")</li>
+            </ul>
+        </li>
+
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Mes Demandes d'Achat <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li>@Html.ActionLink("Consulter ", "Index", "Demande")</li>
+            <li>@Html.ActionLink("Historique ", "Historique", "Demande")</li>
+            <li>@Html.ActionLink("Tableau d'avancement ", "Avancement", "Demande")</li>
+        </ul>
+    </li>
+
+
+        if (ViewBag.Demandeur.Count > 0)
+        {
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"> <span class="glyphicon glyphicon-globe"></span> <span class="badge">@ViewBag.Demandeur.Count</span> <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                   
+                    @foreach (var n in ViewBag.Demandeur)
+                    {
+                        if (n.Achat.Type == TypeDemande.Besoin)
+                        {
+                            <li><a href="/Besoin/Notification/@n.ID">@n.Lbl</a></li>
+                        }
+                        else if (n.Achat.Type == TypeDemande.Demande)
+                        {
+                            <li><a href="/Demande/Notification/@n.ID">@n.Lbl</a></li>
+                        }
+
+                    }
+                </ul>
+            </li>
+        }
+
+
+    }
+
+    if (User.IsInRole(SecurityRole.RespAcha))
+    {
+
+
+
+
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Besoins <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("Consulter", "IndexDem", "Besoin")</li>
+                <li>@Html.ActionLink("Créer", "Ajout", "Besoin")</li>
+            </ul>
+        </li>
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Demandes d'Achat <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li>@Html.ActionLink("Consulter Demandes d'Achat En cours", "Index", "Demande")</li>
+            <li>@Html.ActionLink("Consulter Demande d'Achat Finaux", "Finau", "Demande")</li>
+            <li>@Html.ActionLink("Historique ", "Historique", "Demande")</li>
+            <li>@Html.ActionLink("Tableau d'avancement ", "Avancement", "Demande")</li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bon de commande <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li>@Html.ActionLink("Consulter", "Index", "BC")</li>
+        </ul>
+    </li>
+
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Fournisseurs <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li>@Html.ActionLink("Consulter", "Index", "Four")</li>
+            <li>@Html.ActionLink("Créer", "Create", "Four")</li>
+        </ul>
+    </li>
+
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Categories <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li>@Html.ActionLink("Consulter", "Index", "Categ")</li>
+            <li>@Html.ActionLink("Créer", "Create", "Categ")</li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Départements <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li>@Html.ActionLink("Consulter", "Index", "Department")</li>
+            <li>@Html.ActionLink("Créer", "Create", "Department")</li>
+        </ul>
+    </li>
+
+    <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Utilisateurs <b class="caret"></b></a>
+        <ul class="dropdown-menu">
+            <li>@Html.ActionLink("Créer", "Register", "Account")</li>
+        </ul>
+    </li>
+
+        if (ViewBag.RespAcha.Count > 0)
+        {
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-globe"></span> <span class="badge">@ViewBag.RespAcha.Count</span> <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    @foreach (var n in ViewBag.RespAcha)
+                    {
+                        if (n.Achat.Type == TypeDemande.Besoin)
+                        {
+                            <li><a href="/Besoin/Notification/@n.ID">@n.Lbl</a></li>
+                        }
+                        else if (n.Achat.Type == TypeDemande.Demande)
+                        {
+                            <li><a href="/Demande/Notification/@n.ID">@n.Lbl</a></li>
+                        }
+                    }
+                </ul>
+            </li>
+        }
+
+    }
+
+
+
+    if (User.IsInRole(SecurityRole.DAF))
+    {
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Besoins <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("Consulter", "Index", "Besoin")</li>
+                <li>@Html.ActionLink("Créer", "Ajout", "Besoin")</li>
+            </ul>
+        </li>
+
+        <li>@Html.ActionLink("Avis", "Index", "Avis")</li>
+        if (ViewBag.DAF.Count > 0)
+        {
+            
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-globe"></span> <span class="badge">@ViewBag.DAF.Count</span> <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    @foreach (var n in ViewBag.DAF)
+                    {
+                        <li><a href="/Avis/Notification/@n.ID">@n.Lbl</a></li>
+                    }
+                </ul>
+            </li>
+        }
+    }
+
+    if (User.IsInRole(SecurityRole.AUDIT))
+    {
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Besoins <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("Consulter", "Index", "Besoin")</li>
+                <li>@Html.ActionLink("Créer", "Ajout", "Besoin")</li>
+            </ul>
+        </li>
+
+
+        <li>@Html.ActionLink("Avis", "Index", "Avis")</li>
+        if (ViewBag.AUDIT.Count > 0)
+        {
+            
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-globe"></span> <span class="badge">@ViewBag.AUDIT.Count</span> <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    @foreach (var n in ViewBag.AUDIT)
+                    {
+                        <li><a href="/Avis/Notification/@n.ID">@n.Lbl</a></li>
+                    }
+                </ul>
+            </li>
+        }
+    }
+
+    if (User.IsInRole(SecurityRole.DG))
+    {
+        <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Besoins <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+                <li>@Html.ActionLink("Consulter", "Index", "Besoin")</li>
+                <li>@Html.ActionLink("Créer", "Ajout", "Besoin")</li>
+            </ul>
+        </li>
+        <li>@Html.ActionLink("Avis", "Index", "Avis")</li>
+        if (ViewBag.DG.Count > 0)
+        {
+            
+
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-globe"></span> <span class="badge">@ViewBag.DG.Count</span> <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    @foreach (var n in ViewBag.DG)
+                    {
+                        <li><a href="/Avis/Notification/@n.ID">@n.Lbl</a></li>
+                    }
+                </ul>
+            </li>
+        }
+    }
+    
+    
+    
+}
+

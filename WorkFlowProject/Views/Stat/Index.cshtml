@@ -1,0 +1,84 @@
+﻿@model WorkFlowProject.Models.StatGenerale
+
+<div class="container-fluid" style="margin-top:40px !important;">
+    <div class="row">
+        <label class="col-xs-1 control-label">
+            Debut
+        </label>
+        <div class="col-xs-3">
+            @Html.TextBoxFor(model => model.debu, htmlAttributes: new { @class = "form-control", @type = "date", @placeholder = "Debut" })
+        </div>
+        <label class="col-xs-1 control-label">
+            Fin
+        </label>
+        <div class="col-xs-3">
+            @Html.TextBoxFor(model => model.fin, new { @class = "form-control", @type = "date", @placeholder = "Fin" })
+        </div>
+
+        <label class="col-xs-1 control-label">
+            Choix
+        </label>
+        <div class="col-xs-3">
+            @Html.EnumDropDownListFor(model => model.choi, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="row">
+        <hr />
+        <br />
+        <br />
+        <center>
+            <div id="chart_div" style="width: 500px; height: 400px;"></div>
+        </center>
+        
+    </div>
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+
+
+
+    <script type="text/javascript">
+
+    google.charts.load("current", { packages: ["corechart"] });
+    google.charts.setOnLoadCallback(drawChart);
+        function drawChart() {
+    
+        $.getJSON('/Avis/CalcStat/1', null, function (data) {
+
+
+
+            var re = JSON.stringify(data);
+            var items = '[["Category" ,"Count"],';
+            JSON.parse(re, function (key, value) {
+                if (key != '' && !Number.isInteger(Number.parseInt(key))) {
+                    items += '["' + key + '",' + value + '],';
+                }
+            });
+            items += '[]]';
+
+            var r = JSON.parse(items);
+
+            r.pop();
+
+            var d = google.visualization.arrayToDataTable(r);
+
+            var options = {
+                title: 'Resultat',
+                is3D: true,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
+            chart.draw(d, options);
+
+        });
+
+    }
+    </script>
+
+}

@@ -13,10 +13,11 @@ using WorkFlowProject.Models;
 namespace WorkFlowProject.Controllers
 {
     [Authorize]
-    public class AccountController : Controller
+    public class AccountController : WorkController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+
 
         public AccountController()
         {
@@ -86,7 +87,7 @@ namespace WorkFlowProject.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", "Utilisateur ou Mot de passe invalide !");
                     return View(model);
             }
         }
@@ -139,6 +140,7 @@ namespace WorkFlowProject.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
+            ViewBag.DepartmentID = new SelectList(db.Departments, "ID", "Dep");
             return View();
         }
 
@@ -147,17 +149,66 @@ namespace WorkFlowProject.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterViewModel model)
+        public async Task<ActionResult> Register(RegisterViewModel model, int DepartmentID)
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser
+                {
+                    UserName = model.Login,
+                    Email = model.Email,
+                    Address = model.Address,
+                    Datenaiss = model.Datenaiss,
+                    Tel = model.Tel,
+                    DepartmentID = DepartmentID,
+                    Login = model.Login
+                };
+
+                if (model.Singimg != null)
+                {
+                    var ext = System.IO.Path.GetExtension(model.Singimg.FileName);
+                    if (ext == ".jpeg" || ext == ".jpg" || ext == ".png")
+                    {
+                        string filename = model.Login + "-" + Guid.NewGuid().ToString() + ext;
+                        model.Singimg.SaveAs(Server.MapPath(@"~/Content/img/" + filename));
+                        user.SignatureUser = "/Content/img/" + filename; 
+                    }
+                }
+
+
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                    //await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
+
+
+
+                    if (model.DAF)
+                    {
+                        await UserManager.AddToRoleAsync(user.Id, role: SecurityRole.DAF);
+                    }
+
+                    if (model.Demandeur)
+                    {
+                        await UserManager.AddToRoleAsync(user.Id, role: SecurityRole.Demandeur);
+                    }
+
+                    if (model.RespAcha)
+                    {
+                        await UserManager.AddToRoleAsync(user.Id, role: SecurityRole.RespAcha);
+                    }
+
+                    if (model.Audit)
+                    {
+                        await UserManager.AddToRoleAsync(user.Id, role: SecurityRole.AUDIT);
+                    }
+
+                    if (model.DG)
+                    {
+                        await UserManager.AddToRoleAsync(user.Id, role: SecurityRole.DG);
+                    }
+
+                    // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
@@ -169,6 +220,8 @@ namespace WorkFlowProject.Controllers
             }
 
             // If we got this far, something failed, redisplay form
+
+            ViewBag.DepartmentID = new SelectList(db.Departments, "ID", "Dep");
             return View(model);
         }
 
@@ -209,7 +262,7 @@ namespace WorkFlowProject.Controllers
                     return View("ForgotPasswordConfirmation");
                 }
 
-                // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
+                // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
                 // string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 // var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);		
@@ -391,7 +444,14 @@ namespace WorkFlowProject.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            AuthenticationManager.SignOut();
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        public ActionResult LogOff(int? ID)
+        {
+            AuthenticationManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
 

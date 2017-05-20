@@ -1,0 +1,130 @@
+﻿@model WorkFlowProject.Models.AchaFournisseur
+
+@{
+    ViewBag.SubTotal = Model.Price * Model.Achat.Qte ;
+    ViewBag.Remise = Model.Remise * Model.Achat.Qte;
+    ViewBag.Total = ViewBag.SubTotal - ViewBag.Remise;
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+            @if (Model.Achat.State == WorkFlowProject.Models.StateDemande.Reciption)
+            {
+                <h3 class="text-right" style="color:green;">Livrée</h3>
+            }
+            
+            <div class="text-center">
+                
+                <h2>BON DE COMMANDE #@Model.AchatID </h2>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="panel panel-default height">
+                        <div class="panel-heading"> <strong>STAFIM Peugeot</strong></div>
+                        <div class="panel-body">
+                            <strong>CONCESSIONNAIRE PEUGEOT</strong><br>
+                            Société Tunisienne Automobile Financiére<br>
+                            Immobiliére et Maritime <br />
+                            STAFIM concessionnaire d'Automobiles <br />
+                            Peugeot en Tunisie <br />
+                            Société Anonyme au capital de 30.000.000 Dinars <br />
+                            <strong>TVA :</strong> 10574 Q/A/M/000 - R.C : B152261996 <br />
+                            Banque de Tunisie - Les berges du lac <br />
+                            <strong>RIB :</strong> 05031000098300022327<br>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="panel panel-default height">
+                        <div class="panel-heading"><strong>A</strong></div>
+                        <div class="panel-body">
+                            <strong>Fournisseur :</strong> @Model.Fournisseur.Nom_frn<br>
+                            <strong>Tel :</strong> @Model.Fournisseur.Tel_frn<br>
+                            <strong>Email :</strong> @Model.Fournisseur.Mail_frn<br>
+                            <strong>Adress :</strong> @Model.Fournisseur.Adress_frn<br>
+                            
+                        </div>
+                    </div>
+                </div>
+                </div>
+            <div class="row">
+                <div class="col-xs-6 ">
+                    <div class="panel panel-default height">
+                        <div class="panel-heading"><strong>Mode de Payment</strong></div>
+                        <div class="panel-body">
+                            <strong>Délait de reglement:</strong> @Model.Delais<br /> 
+                            <strong>Lieu de livraison:</strong> @Model.Achat.LieuLiv
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="table-responsive">
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <td><strong>Désignation</strong></td>
+                                    <td class="text-center"><strong>Quantité</strong></td>
+                                    <td class="text-center"><strong>Prix Unitére HT</strong></td>
+                                    <td class="text-right"><strong>Prix Total HT</strong></td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>@Model.Achat.Des</td>
+                                    <td class="text-center">@Model.Achat.Qte</td>
+                                    <td class="text-center">@Model.Price</td>
+                                    <td class="text-right">@ViewBag.SubTotal</td>
+                                </tr>
+                                <tr>
+                                    <td class="highrow"></td>
+                                    <td class="highrow"></td>
+                                    <td class="highrow text-right"><strong>Sous Total</strong></td>
+                                    <td class="highrow text-right">@ViewBag.SubTotal</td>
+                                </tr>
+                                <tr>
+                                    <td class="emptyrow"></td>
+                                    <td class="emptyrow"></td>
+                                    <td class="emptyrow text-right"><strong>Remise</strong></td>
+                                    <td class="emptyrow text-right">@ViewBag.Remise</td>
+                                </tr>
+                                <tr>
+                                    <td class="emptyrow"><i class="fa fa-barcode iconbig"></i></td>
+                                    <td class="emptyrow"></td>
+                                    <td class="emptyrow text-right"><strong>Total</strong></td>
+                                    <td class="emptyrow text-right">@ViewBag.Total</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 pull-right">
+            <img src="~/Content/img/respacha-ad2f06da-ef76-42e0-8608-5d6a2fd87100.png" width="170">
+        </div>
+    </div>
+
+    <div class="row hidden-print">
+
+        @if (Model.Achat.State != WorkFlowProject.Models.StateDemande.Reciption)
+        {
+            <div class="col-xs-6">
+                @Html.ActionLink("Enregister livraison", "Livraison", new { id = Model.Achat.ID , total = ViewBag.Total }, new { @class = "btn btn-success" })
+            </div>
+        }
+        
+        <div class="col-xs-6">
+            <button class="btn btn-default" type="button" onclick="window.print()">Imprimer bon de commande</button>
+        </div>
+    </div>
+</div>

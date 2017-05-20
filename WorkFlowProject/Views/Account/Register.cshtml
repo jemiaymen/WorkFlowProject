@@ -1,37 +1,121 @@
 ﻿@model WorkFlowProject.Models.RegisterViewModel
 @{
-    ViewBag.Title = "Register";
+    ViewBag.Title = "Ajout Utilisateur";
 }
+
 
 <h2>@ViewBag.Title.</h2>
 
-@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    <h4>Create a new account.</h4>
+    
     <hr />
+
+
     @Html.ValidationSummary("", new { @class = "text-danger" })
+
     <div class="form-group">
-        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
+        @Html.Label("Department", htmlAttributes: new { @class = "control-label col-md-3" })
+        <div class="col-md-9">
+            @Html.DropDownList("DepartmentID", null, htmlAttributes: new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Login, new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.Login, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
             @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
         </div>
     </div>
+
     <div class="form-group">
-        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
+        @Html.LabelFor(m => m.Password, new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
             @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
         </div>
     </div>
+
     <div class="form-group">
-        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
-        <div class="col-md-10">
+        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-3 control-label" })
+        <div class="col-md-9">
             @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
         </div>
     </div>
+
+
+
     <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" class="btn btn-default" value="Register" />
+        @Html.LabelFor(m => m.Address, new { @class = "col-md-3 control-label" })
+
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Datenaiss, new { @class = "col-md-3 control-label" })
+
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.Datenaiss, new { @class = "form-control", type = "date" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Tel, new { @class = "col-md-3 control-label" })
+
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.Tel, new { @class = "form-control" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Singimg, new { @class = "col-md-3 control-label" })
+
+        <div class="col-md-9">
+            @Html.TextBoxFor(m => m.Singimg, new { type = "file", name = "Sig" })
+        </div>
+    </div>
+
+    <div class="form-group">
+
+        @Html.Label("Responsable Achat", new { @class = "col-md-3 control-label" })
+        <div class="col-md-1">
+            @Html.CheckBox("RespAcha", false)
+        </div>
+
+        @Html.LabelFor(m => m.Demandeur, new { @class = "col-md-3 control-label" })
+        <div class="col-md-1">
+            @Html.CheckBox("Demandeur" , false)
+        </div>
+
+        @Html.LabelFor(m => m.DAF, new { @class = "col-md-3 control-label" })
+        <div class="col-md-1">
+            @Html.CheckBox("DAF" , false)
+        </div>
+
+        @Html.LabelFor(m => m.Audit, new { @class = "col-md-3 control-label" })
+        <div class="col-md-1">
+            @Html.CheckBox("Audit", false)
+        </div>
+
+        @Html.LabelFor(m => m.DG, new { @class = "col-md-3 control-label" })
+        <div class="col-md-1">
+            @Html.CheckBox("DG", false)
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <div class="col-md-offset-3 col-md-9">
+            <input type="submit" class="btn btn-success form-control" value="Créer" />
         </div>
     </div>
 }

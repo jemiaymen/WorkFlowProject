@@ -1,0 +1,51 @@
+﻿@model IEnumerable<WorkFlowProject.Models.Fournisseur>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Hadha fournisseur</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nom_frn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Adress_frn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Mail_frn)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Tel_frn)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Nom_frn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Adress_frn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Mail_frn)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Tel_frn)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

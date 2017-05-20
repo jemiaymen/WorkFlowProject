@@ -1,0 +1,32 @@
+﻿@model WorkFlowProject.Models.Category
+
+@{
+    ViewBag.Title = "Supprimer Catégorie";
+}
+
+<h2>Supprimer</h2>
+
+<h3>voulez vous vraiment supprimer cette catégorie?</h3>
+<div>
+    
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Lbl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Lbl)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Supprimer" class="btn btn-default" /> |
+            @Html.ActionLink("Retour à la liste", "Index")
+        </div>
+    }
+</div>

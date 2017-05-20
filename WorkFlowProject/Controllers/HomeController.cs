@@ -6,7 +6,7 @@ using System.Web.Mvc;
 
 namespace WorkFlowProject.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : WorkController
     {
         public ActionResult Index()
         {

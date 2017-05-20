@@ -1,0 +1,80 @@
+﻿@model IEnumerable<WorkFlowProject.Models.AchaFournisseur>
+
+@{
+    ViewBag.Title = "Bon de Commande";
+}
+
+<h2>@ViewBag.Title</h2>
+<hr />
+<br /><br />
+
+<table class="table table-striped table-hover table-bordered" >
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Achat.Department.Dep)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Achat.Des)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Achat.Categ)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Achat.DtAcha)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Achat.Creation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Achat.LieuLiv)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Achat.Imp)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Achat.Qte)
+        </th>
+        <th></th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Achat.Department.Dep)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Achat.Des)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Achat.Categ)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Achat.DtAcha)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Achat.Creation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Achat.LieuLiv)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Achat.Imp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Achat.Qte)
+        </td>
+        <td>
+            @Html.ActionLink("Detail", "Detail", new { id=item.ID }) 
+        </td>
+        <td>
+            @if (item.Achat.State == WorkFlowProject.Models.StateDemande.Reciption)
+            {
+                <p class="text-success">Livrée</p>
+            }
+        </td>
+
+    </tr>
+}
+
+</table>

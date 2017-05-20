@@ -1,0 +1,145 @@
+﻿@model WorkFlowProject.Models.Demande
+
+
+
+@if (Model.Notification.Role == SecurityRole.Demandeur)
+{
+    ViewBag.Title = "Détaille Demande";
+}
+else
+{
+    ViewBag.Title = "Détaille Besoin";
+}
+
+
+<div class="row">
+    <div class="col-xs-3">
+        <img src="~/Content/img/Peugeot.jpg" width="100" style="margin-top:auto;" />
+    </div>
+    <div class="col-xs-6">
+        <center>
+            <h2>@ViewBag.Title</h2>
+        </center>
+    </div>
+    <div><h4 style="color:red;">Encour</h4></div>
+</div>
+<hr />
+<div class="row">
+
+    <div class="col-xs-2">
+        <b>N° :</b> @Model.Achat.ID
+    </div>
+    <div class="col-xs-5">
+        <b>Date de la Demande : </b> @Model.Achat.DtAcha
+    </div>
+    <div class="col-xs-5">
+        <b>Budget :</b> @Model.Achat.Department.Budget
+    </div>
+</div>
+<hr />
+<div class="row">
+    <div class="col-xs-5">
+        <label>
+            Demandeur : (DIR / SCE)
+        </label>
+    </div>
+    <div class="col-xs-7">
+        @Model.Achat.Department.Dep
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-5">
+        <label>
+            Total dépenses budgétées :
+        </label>
+    </div>
+    <div class="col-xs-7">
+        @Model.Achat.Department.Depense
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-5">
+        <label>
+            Total dépenses à la date de la demande :
+        </label>
+    </div>
+    <div class="col-xs-7">
+        @Model.Achat.Department.Budget
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-xs-5">
+        <label>
+            Création / Remplacement :
+        </label>
+    </div>
+    <div class="col-xs-7">
+        @if (Model.Achat.Creation == true) { <p>Creation</p>}
+        else { <p>Remplacement</p>}
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-5">
+        <label>
+            Lieu de livraison :
+        </label>
+    </div>
+    <div class="col-xs-7">
+        @Model.Achat.LieuLiv
+    </div>
+
+</div>
+
+
+<div class="row">
+    <div class="col-xs-5">
+        <label>
+            Imputation :
+        </label>
+    </div>
+    <div class="col-xs-7">
+        @Model.Achat.Imp
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-xs-5">
+        <label>
+            Quantité :
+        </label>
+    </div>
+    <div class="col-xs-7">
+        @Model.Achat.Qte
+    </div>
+
+</div>
+
+
+
+
+
+@if (Model.Notification.Role == SecurityRole.RespAcha)
+{
+    <div class="row">
+        <div class="col-xs-6">
+            @Html.ActionLink("Accepter", "Accept", new { id = Model.Notification.ID })
+        </div>
+        <div class="col-xs-6">
+            @Html.ActionLink("Refuser", "Reject", new { id = Model.Notification.ID })
+        </div>
+    </div>
+}
+
+@if (Model.Notification.Role == SecurityRole.Demandeur)
+{
+    <hr />
+    <div class="row">
+        <div class="col-xs-6">
+            @Html.ActionLink("Vue", "Vue", new { id = Model.Notification.ID })
+        </div>
+    </div>
+}

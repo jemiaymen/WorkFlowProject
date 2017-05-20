@@ -1,0 +1,25 @@
+﻿@model WorkFlowProject.Models.Category
+
+@{
+    ViewBag.Title = "Détail Catégorie";
+}
+
+<h2>Détail</h2>
+
+<div>
+  
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Lbl)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Lbl)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("retour à la liste", "Index")
+</p>

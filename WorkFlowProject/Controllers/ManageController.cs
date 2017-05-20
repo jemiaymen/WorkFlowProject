@@ -11,7 +11,7 @@ using WorkFlowProject.Models;
 namespace WorkFlowProject.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : WorkController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -50,29 +50,48 @@ namespace WorkFlowProject.Controllers
             }
         }
 
+
+        public ActionResult ChangeLogin()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeLogin(ChangeLoginModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            var result = await SignInManager.PasswordSignInAsync(User.Identity.GetUserName() , model.Password,false,false);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    {
+                        var user = db.Users.Find(User.Identity.GetUserId());
+
+                        user.Login = model.Login;
+                        user.UserName = model.Login;
+
+                        db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+
+                        await db.SaveChangesAsync();
+                        return RedirectToAction("LogOff", "Account", new { id = user.Id });
+                    }
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("Password", "Invalid Password.");
+                    return View(model);
+            }
+            
+        }
         //
         // GET: /Manage/Index
-        public async Task<ActionResult> Index(ManageMessageId? message)
+        public async Task<ActionResult> Index()
         {
-            ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
-                : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
-                : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
-                : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
-                : "";
-
-            var userId = User.Identity.GetUserId();
-            var model = new IndexViewModel
-            {
-                HasPassword = HasPassword(),
-                PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
-                TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
-                Logins = await UserManager.GetLoginsAsync(userId),
-                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
-            };
-            return View(model);
+            return View();
         }
 
         //
@@ -195,9 +214,7 @@ namespace WorkFlowProject.Controllers
         }
 
         //
-        // POST: /Manage/RemovePhoneNumber
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        // GET: /Manage/RemovePhoneNumber
         public async Task<ActionResult> RemovePhoneNumber()
         {
             var result = await UserManager.SetPhoneNumberAsync(User.Identity.GetUserId(), null);
